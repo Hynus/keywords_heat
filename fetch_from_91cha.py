@@ -5,7 +5,7 @@
     @desc:     get keyword rank and keywords baidu index from API in 91cha
 """
 import requests
-
+import utils
 keyword_rank_key = '408a2f2774f54c7a86bdf84719440fde'
 keyword_baidu_index_key = '2de7cd043a6d46ba910aa611c23fcd94'
 
@@ -19,15 +19,18 @@ def get_keyword_rank_dict(host_url, keyword):
     ret_host = resp.json().get('data').get('host')
     ret_keyword = resp.json().get('data').get('keyword')
     ret_rank = resp.json().get('data').get('sort')
+    if ret_rank == u'50名以外':
+        ret_rank = 'not in top 50'
     keyword_rank_dict['state'] = 'success'
-    keyword_rank_dict['host'] = ret_host
-    keyword_rank_dict['keyword'] = ret_keyword
-    keyword_rank_dict['rank'] = ret_rank
+    keyword_rank_dict['host'] = ret_host.encode('unicode-escape').decode('string_escape')
+    keyword_rank_dict['keyword'] = ret_keyword.encode('unicode-escape').decode('string_escape')
+    keyword_rank_dict['rank'] = ret_rank.encode('unicode-escape').decode('string_escape')
     return keyword_rank_dict
 
-def get_keyword_baidu_index(keywords):
+def get_keyword_baidu_index(keyword):
     keyword_baidu_index_dict = {}
     baidu_index_infos = []
+    keywords = [keyword]
     req_url = 'http://api.91cha.com/index?key=' + keyword_baidu_index_key + '&kws=' + ','.join(keywords)
     resp = requests.get(req_url)
     if resp.json().get('state') != 1:
@@ -35,10 +38,10 @@ def get_keyword_baidu_index(keywords):
         return keyword_baidu_index_dict
     for item in resp.json().get('data'):
         tmp_dict = {}
-        tmp_dict['keyword'] = item.get('keyword')
-        tmp_dict['allindex'] = item.get('allindex')
-        tmp_dict['mobileindex'] = item.get('mobileindex')
-        tmp_dict['so360index'] = item.get('so360index')
+        tmp_dict['keyword'] = item.get('keyword').encode('unicode-escape').decode('string_escape')
+        tmp_dict['allindex'] = utils.group(item.get('allindex'))
+        tmp_dict['mobileindex'] = utils.group(item.get('mobileindex'))
+        tmp_dict['so360index'] = utils.group(item.get('so360index'))
         baidu_index_infos.append(tmp_dict)
     keyword_baidu_index_dict['state'] = 'success'
     keyword_baidu_index_dict['index_info'] = baidu_index_infos
