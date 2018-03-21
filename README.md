@@ -4,7 +4,7 @@
 <b> get\_keyword\_rank\_dict </b>--用来查询关键词在对应网站的搜索排名
 <br>输入：host,&nbsp;keyword&nbsp;(其中host为要查询的网站)
 <br>输出：dict,&nbsp;key值为：状态(成功与否)，排名(50名以内名次，或50名以外)，关键词，host
-<b> get\_keyword\_baidu\_index </b>--用来查询关键词的百度指数
+<br><b> get\_keyword\_baidu\_index </b>--用来查询关键词的百度指数
 <br>输入：关键词列表（默认还是单个关键词）
 <br>输出：dict,&nbsp;key值为：状态，指数信息（一个dict的列表）
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
