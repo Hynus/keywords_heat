@@ -29,7 +29,6 @@ def get_keyword_rank_dict(host_url, keyword):
 
 def get_keyword_baidu_index(keyword):
     keyword_baidu_index_dict = {}
-    baidu_index_infos = []
     keywords = [keyword]
     req_url = 'http://api.91cha.com/index?key=' + keyword_baidu_index_key + '&kws=' + ','.join(keywords)
     resp = requests.get(req_url)
@@ -37,14 +36,11 @@ def get_keyword_baidu_index(keyword):
         keyword_baidu_index_dict['state'] = 'failure'
         return keyword_baidu_index_dict
     for item in resp.json().get('data'):
-        tmp_dict = {}
-        tmp_dict['keyword'] = item.get('keyword').encode('unicode-escape').decode('string_escape')
-        tmp_dict['allindex'] = utils.group(item.get('allindex'))
-        tmp_dict['mobileindex'] = utils.group(item.get('mobileindex'))
-        tmp_dict['so360index'] = utils.group(item.get('so360index'))
-        baidu_index_infos.append(tmp_dict)
+        keyword_baidu_index_dict['keyword'] = item.get('keyword').encode('unicode-escape').decode('string_escape')
+        keyword_baidu_index_dict['allindex'] = utils.group(item.get('allindex'))
+        keyword_baidu_index_dict['mobileindex'] = utils.group(item.get('mobileindex'))
+        keyword_baidu_index_dict['so360index'] = utils.group(item.get('so360index'))
     keyword_baidu_index_dict['state'] = 'success'
-    keyword_baidu_index_dict['index_info'] = baidu_index_infos
     return keyword_baidu_index_dict
 
 def run_main():
