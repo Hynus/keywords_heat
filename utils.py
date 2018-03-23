@@ -10,3 +10,6 @@ def group(n, sep = ','):
         return '-%s' % retval
     else:
         return retval
+
+def comma_str_to_int(num_str):
+    return int(num_str.replace(',', ''))
